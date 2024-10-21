@@ -1,3 +1,27 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer base {
+  body {
+    @apply bg-paper font-sans text-ink antialiased;
+  }
+}
+
+@layer components {
+  .btn-primary {
+    @apply rounded-md bg-accent px-5 py-2.5 font-display text-sm font-semibold text-white hover:bg-accent-dark focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent disabled:cursor-wait disabled:opacity-70;
+  }
+  .btn-quiet {
+    @apply inline-flex items-center gap-1.5 rounded-md px-2 py-1 text-sm font-medium focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-1 focus-visible:outline-accent;
+  }
+  .btn-add {
+    @apply btn-quiet text-accent-dark hover:bg-accent-tint;
+  }
+  .btn-remove {
+    @apply btn-quiet text-ink-soft hover:bg-red-50 hover:text-danger;
+  }
+  .section-title {
+    @apply font-display font-semibold tracking-tight;
+  }
+}

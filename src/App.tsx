@@ -3,14 +3,14 @@ import { DynamicForm } from './components/DynamicForm';
 import { FormResult } from './components/FormResult';
 
 const App = () => (
-  <div className="bg-gray-200 min-h-screen flex items-center justify-center md:p-5">
+  <main className="min-h-screen px-4 py-6 sm:px-6 md:py-10">
     <Router>
       <Routes>
         <Route path="/" element={<DynamicForm />} />
         <Route path="/results" element={<FormResult />} />
       </Routes>
     </Router>
-  </div>
+  </main>
 );
 
 export default App;

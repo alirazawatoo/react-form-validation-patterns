@@ -4,19 +4,18 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import { DISCOUNT_RATE, formatAmount, summarize } from '../lib/totals';
 import { TFormData } from '../types';
 
-interface HeadingProps {
+interface LineProps {
   title: string;
-  price: string;
+  value: string;
+  emphasis?: boolean;
 }
 
-const Heading: React.FC<HeadingProps> = ({ title, price }) => {
-  return (
-    <div className="flex w-full space-x-4">
-      <h2 className="text-lg font-medium w-1/2">{title}</h2>
-      <h2 className="text-lg font-normal w-1/2 text-right">{price}</h2>
-    </div>
-  );
-};
+const Line: React.FC<LineProps> = ({ title, value, emphasis }) => (
+  <div className={`flex items-baseline justify-between gap-4 py-2 ${emphasis ? 'text-xl font-semibold' : ''}`}>
+    <dt className={emphasis ? 'section-title' : 'text-ink-soft'}>{title}</dt>
+    <dd className="font-mono tabular-nums">{value}</dd>
+  </div>
+);
 
 export const FormResult: React.FC = () => {
   const location = useLocation();
@@ -26,39 +25,46 @@ export const FormResult: React.FC = () => {
 
   if (!formData || !summary) {
     return (
-      <section className="bg-white rounded-2xl p-8 max-w-lg m-6">
-        <h1 className="text-2xl font-semibold">No estimate to review</h1>
-        <p className="my-4 text-gray-600">
+      <section className="mx-auto max-w-lg rounded-lg border border-line bg-white p-8">
+        <h1 className="section-title text-2xl">No estimate to review</h1>
+        <p className="my-4 text-ink-soft">
           Complete the form first. This demo passes results in browser navigation state and does not save estimates.
         </p>
-        <button onClick={() => navigate('/')} className="text-green-800 underline">
+        <button onClick={() => navigate('/')} className="btn-primary">
           Create an estimate
         </button>
       </section>
     );
   }
 
+  const taskCount = formData.groups.reduce((count, group) => count + group.tasks.length, 0);
+
   return (
-    <div className="bg-white flex flex-col gap-5 p-5 h-1/2 w-full md:w-1/2 md:rounded-2xl md:shadow-md mx-auto my-auto">
+    <section className="mx-auto flex w-full max-w-xl flex-col gap-5 rounded-lg border border-line bg-white p-5 shadow-sm sm:p-8">
       <button
-        className="text-blue-600 flex items-center mb-4"
+        className="btn-quiet self-start text-accent-dark hover:bg-accent-tint"
         onClick={() => navigate('/', { state: { draft: formData } })}
       >
-        <IoIosArrowBack className="mr-2" size={20} />
+        <IoIosArrowBack aria-hidden="true" size={18} />
         Back
       </button>
 
-      <h1 className="text-3xl font-semibold text-center">Form Results</h1>
+      <header className="border-b border-line pb-4">
+        <p className="font-mono text-xs uppercase tracking-widest text-accent-dark">Estimate summary</p>
+        <h1 className="section-title text-3xl">Form Results</h1>
+        <p className="mt-1 text-sm text-ink-soft">
+          {formData.client} · {formData.groups.length} {formData.groups.length === 1 ? 'group' : 'groups'} · {taskCount}{' '}
+          {taskCount === 1 ? 'task' : 'tasks'}
+        </p>
+      </header>
 
-      <Heading title="Task Total" price={formatAmount(summary.tasks)} />
-      <Heading title="Material Total" price={formatAmount(summary.materials)} />
-      <Heading title="Net Total" price={formatAmount(summary.net)} />
-      <hr className="border-t-2 border-gray-200 my-2" />
-
-      <Heading title="Discount" price={`${DISCOUNT_RATE * 100}%`} />
-      <hr className="border-t-2 border-gray-200 my-2" />
-
-      <Heading title="Grand Total" price={formatAmount(summary.grand)} />
-    </div>
+      <dl className="divide-y divide-line">
+        <Line title="Task Total" value={formatAmount(summary.tasks)} />
+        <Line title="Material Total" value={formatAmount(summary.materials)} />
+        <Line title="Net Total" value={formatAmount(summary.net)} />
+        <Line title="Discount" value={`${DISCOUNT_RATE * 100}%`} />
+        <Line title="Grand Total" value={formatAmount(summary.grand)} emphasis />
+      </dl>
+    </section>
   );
 };

@@ -136,7 +136,7 @@ describe('DynamicForm Component', () => {
   it('adds a new group when clicking the "+" button', () => {
     renderComponent();
 
-    const addGroupButton = screen.getByRole('button', { name: 'Add Group' });
+    const addGroupButton = screen.getByRole('button', { name: 'Add group' });
     fireEvent.click(addGroupButton);
     expect(screen.getByText('Group 2')).toBeInTheDocument();
   });
@@ -144,7 +144,7 @@ describe('DynamicForm Component', () => {
   it('adds a new task when clicking the "+" button', () => {
     renderComponent();
 
-    const addGroupButton = screen.getByRole('button', { name: 'Add Task' });
+    const addGroupButton = screen.getByRole('button', { name: 'Add task' });
     fireEvent.click(addGroupButton);
     expect(screen.getByText('Task 2')).toBeInTheDocument();
   });
@@ -152,7 +152,7 @@ describe('DynamicForm Component', () => {
   it('adds a new material when clicking the "+" button', () => {
     renderComponent();
 
-    const addGroupButton = screen.getByRole('button', { name: 'Add Material' });
+    const addGroupButton = screen.getByRole('button', { name: 'Add material' });
     fireEvent.click(addGroupButton);
     expect(screen.getByText('Material 2')).toBeInTheDocument();
   });

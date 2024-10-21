@@ -4,7 +4,7 @@ import { useFieldArray, useFormContext, useFormState, useWatch } from 'react-hoo
 import { FormInput } from './Input';
 import { lineTotal } from '../lib/totals';
 import { MaterialFields } from './MaterialFields';
-import { AiFillPlusCircle, AiFillCloseCircle } from 'react-icons/ai';
+import { AiOutlinePlus, AiOutlineClose } from 'react-icons/ai';
 import { ErrorMessage } from '@hookform/error-message';
 import { DEFAULT_TASK_VALUE } from '../constants';
 
@@ -45,44 +45,69 @@ export const TaskFields: React.FC<Props> = ({ groupIndex }) => {
   }, [groupIndex, setValue, watchedTasks]);
 
   return (
-    <div className="flex flex-col gap-5">
-      <div className="flex items-center gap-2">
-        <h4 className="font-semibold">Tasks</h4>
-        <button type="button" aria-label="Add Task" onClick={() => appendTask(DEFAULT_TASK_VALUE)}>
-          <AiFillPlusCircle className="text-green-700 w-6 h-6" />
+    <div className="flex flex-col gap-4">
+      <div className="flex items-center justify-between gap-2">
+        <h3 className="section-title text-base">Tasks</h3>
+        <button type="button" className="btn-add" onClick={() => appendTask(DEFAULT_TASK_VALUE)}>
+          <AiOutlinePlus aria-hidden="true" />
+          Add task
         </button>
       </div>
+      {taskFields.length === 0 && <p className="text-sm text-ink-soft">No tasks in this group yet.</p>}
       {taskFields.map((task, taskIndex) => (
-        <div key={task.id} className="flex flex-col gap-5 p-5 rounded-xl border border-gray-300">
-          <div className="flex items-center gap-2">
-            <h5 className="font-semibold">Task {taskIndex + 1}</h5>
-            <button type="button" aria-label={`Remove task ${taskIndex + 1}`} onClick={() => removeTask(taskIndex)}>
-              <AiFillCloseCircle className="text-red-600 w-6 h-6" />
-            </button>
+        <fieldset key={task.id} className="relative flex flex-col gap-4 rounded-md border border-line bg-paper/40 p-4">
+          <legend className="pr-24 section-title float-left text-base">Task {taskIndex + 1}</legend>
+          <button
+            type="button"
+            aria-label={`Remove task ${taskIndex + 1}`}
+            className="btn-remove absolute right-2 top-2 sm:right-3 sm:top-3"
+            onClick={() => removeTask(taskIndex)}
+          >
+            <AiOutlineClose aria-hidden="true" />
+            Remove
+          </button>
+          <div className="grid gap-4 sm:grid-cols-2">
+            <FormInput label="Task Name" name={`groups.${groupIndex}.tasks.${taskIndex}.name`} autoComplete="off" />
+            <FormInput
+              label="Description"
+              name={`groups.${groupIndex}.tasks.${taskIndex}.description`}
+              autoComplete="off"
+            />
           </div>
-          <FormInput label="Task Name" name={`groups.${groupIndex}.tasks.${taskIndex}.name`} />
-          <FormInput label="Description" name={`groups.${groupIndex}.tasks.${taskIndex}.description`} />
-          <FormInput
-            label="Quantity"
-            name={`groups.${groupIndex}.tasks.${taskIndex}.quantity`}
-            type="number"
-            step="any"
-          />
-          <FormInput label="Rate" name={`groups.${groupIndex}.tasks.${taskIndex}.rate`} type="number" step="any" />
-          <FormInput
-            label="Total"
-            name={`groups.${groupIndex}.tasks.${taskIndex}.total`}
-            type="number"
-            step="any"
-            readOnly
-          />
+          <div className="grid gap-4 sm:grid-cols-3">
+            <FormInput
+              label="Quantity"
+              name={`groups.${groupIndex}.tasks.${taskIndex}.quantity`}
+              type="number"
+              step="any"
+              inputMode="decimal"
+            />
+            <FormInput
+              label="Rate"
+              name={`groups.${groupIndex}.tasks.${taskIndex}.rate`}
+              type="number"
+              step="any"
+              inputMode="decimal"
+            />
+            <FormInput
+              label="Total"
+              name={`groups.${groupIndex}.tasks.${taskIndex}.total`}
+              type="number"
+              step="any"
+              readOnly
+            />
+          </div>
           <MaterialFields groupIndex={groupIndex} taskIndex={taskIndex} />
-        </div>
+        </fieldset>
       ))}
       <ErrorMessage
         errors={errors}
         name={`groups.${groupIndex}.tasks.root`}
-        render={({ message }) => <p className="text-red-600">{message}</p>}
+        render={({ message }) => (
+          <p role="alert" className="text-sm text-danger">
+            {message}
+          </p>
+        )}
       />
     </div>
   );
