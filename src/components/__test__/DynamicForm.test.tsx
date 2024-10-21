@@ -1,17 +1,16 @@
 /* eslint-disable no-redeclare */
-import { render, screen, fireEvent, waitFor } from '@testing-library/react';
-import '@testing-library/jest-dom';
-import { Router } from 'react-router-dom';
+import { render, screen, fireEvent } from '@testing-library/react';
+import { MemoryRouter, Route, Routes } from 'react-router-dom';
 import { DynamicForm } from '../DynamicForm';
-import { createMemoryHistory } from 'history';
-
-const history = createMemoryHistory();
 
 const renderComponent = (): void => {
   render(
-    <Router navigator={history} location="/">
-      <DynamicForm />
-    </Router>
+    <MemoryRouter>
+      <Routes>
+        <Route path="/" element={<DynamicForm />} />
+        <Route path="/results" element={<p>Results page</p>} />
+      </Routes>
+    </MemoryRouter>
   );
 };
 
@@ -194,8 +193,6 @@ describe('DynamicForm Component', () => {
 
     const submitButton = screen.getByRole('button', { name: 'Submit' });
     fireEvent.click(submitButton);
-    await waitFor(() => {
-      expect(history.location.pathname).toBe('/results');
-    });
+    expect(await screen.findByText('Results page')).toBeInTheDocument();
   });
 });

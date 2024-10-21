@@ -1,6 +1,5 @@
 /* eslint-disable-next-line no-redeclare */
 import { render, screen, fireEvent } from '@testing-library/react';
-import '@testing-library/jest-dom';
 import { MemoryRouter, Route, Routes } from 'react-router-dom';
 import { FormResult } from '../FormResult';
 import { DynamicForm } from '../DynamicForm';
