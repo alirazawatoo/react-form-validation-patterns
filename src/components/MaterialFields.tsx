@@ -2,6 +2,7 @@ import { TFormData } from '../types';
 import React, { useEffect } from 'react';
 import { useFormContext, useFieldArray, useFormState, useWatch } from 'react-hook-form';
 import { FormInput } from './Input';
+import { lineTotal } from '../lib/totals';
 import { AiFillPlusCircle, AiFillCloseCircle } from 'react-icons/ai';
 import { ErrorMessage } from '@hookform/error-message';
 import { DEFAULT_MATERIAL_VALUE } from '../constants';
@@ -29,9 +30,7 @@ export const MaterialFields: React.FC<Props> = ({ groupIndex, taskIndex }) => {
     if (!watchedMaterials) return;
 
     watchedMaterials.forEach((material, materialIndex) => {
-      const quantity = Number(material?.quantity ?? 0);
-      const rate = Number(material?.rate ?? 0);
-      const total = Number.isFinite(quantity) && Number.isFinite(rate) ? quantity * rate : 0;
+      const total = lineTotal(material?.quantity, material?.rate);
 
       if (Number.isFinite(total) && Number(material?.total) !== total) {
         setValue(`groups.${groupIndex}.tasks.${taskIndex}.materials.${materialIndex}.total`, total, {

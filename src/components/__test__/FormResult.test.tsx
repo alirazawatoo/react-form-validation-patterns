@@ -63,3 +63,27 @@ it('returns to the form with submitted values available for editing', () => {
   expect(screen.getByLabelText('Client Name')).toHaveValue(exampleFormData.client);
   expect(screen.getAllByLabelText('Group Name')[0]).toHaveValue(exampleFormData.groups[0].name);
 });
+
+it('shows fractional amounts rounded to two decimals', () => {
+  const fractional: TFormData = {
+    client: 'Demo client',
+    groups: [
+      {
+        name: 'Trim',
+        tasks: [
+          {
+            name: 'Sand',
+            description: 'Sand the trim',
+            quantity: 3,
+            rate: 0.1,
+            total: 0.3,
+            materials: [{ name: 'Paper', quantity: 1, rate: 0.2, total: 0.2 }],
+          },
+        ],
+      },
+    ],
+  };
+  renderComponentWithState(fractional);
+  expect(screen.getByText('0.5')).toBeInTheDocument();
+  expect(screen.getByText('0.4')).toBeInTheDocument();
+});

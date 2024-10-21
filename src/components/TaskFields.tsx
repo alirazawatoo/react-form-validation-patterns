@@ -2,6 +2,7 @@ import { TFormData } from '../types';
 import React, { useEffect } from 'react';
 import { useFieldArray, useFormContext, useFormState, useWatch } from 'react-hook-form';
 import { FormInput } from './Input';
+import { lineTotal } from '../lib/totals';
 import { MaterialFields } from './MaterialFields';
 import { AiFillPlusCircle, AiFillCloseCircle } from 'react-icons/ai';
 import { ErrorMessage } from '@hookform/error-message';
@@ -32,9 +33,7 @@ export const TaskFields: React.FC<Props> = ({ groupIndex }) => {
     if (!watchedTasks) return;
 
     watchedTasks.forEach((task, taskIndex) => {
-      const quantity = Number(task?.quantity ?? 0);
-      const rate = Number(task?.rate ?? 0);
-      const total = Number.isFinite(quantity) && Number.isFinite(rate) ? quantity * rate : 0;
+      const total = lineTotal(task?.quantity, task?.rate);
 
       if (Number.isFinite(total) && Number(task?.total) !== total) {
         setValue(`groups.${groupIndex}.tasks.${taskIndex}.total`, total, {

@@ -124,6 +124,15 @@ describe('DynamicForm Component', () => {
     expect(materialTotal).toHaveValue(15);
   });
 
+  it('rounds a fractional line total to cents', () => {
+    renderComponent();
+
+    fireEvent.change(screen.getAllByLabelText('Quantity')[0], { target: { value: 3 } });
+    fireEvent.change(screen.getAllByLabelText('Rate')[0], { target: { value: 0.1 } });
+
+    expect(screen.getAllByLabelText('Total')[0]).toHaveValue(0.3);
+  });
+
   it('adds a new group when clicking the "+" button', () => {
     renderComponent();
 
