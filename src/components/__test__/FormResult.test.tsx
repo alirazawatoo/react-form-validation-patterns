@@ -1,4 +1,3 @@
-/* eslint-disable-next-line no-redeclare */
 import { render, screen, fireEvent } from '@testing-library/react';
 import { MemoryRouter, Route, Routes } from 'react-router-dom';
 import { FormResult } from '../FormResult';
