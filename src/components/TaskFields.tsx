@@ -81,7 +81,7 @@ export const TaskFields: React.FC<Props> = ({ groupIndex }) => {
       ))}
       <ErrorMessage
         errors={errors}
-        name={`groups.${groupIndex}.tasks`}
+        name={`groups.${groupIndex}.tasks.root`}
         render={({ message }) => <p className="text-red-600">{message}</p>}
       />
     </div>

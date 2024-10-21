@@ -88,7 +88,7 @@ export const MaterialFields: React.FC<Props> = ({ groupIndex, taskIndex }) => {
       ))}
       <ErrorMessage
         errors={errors}
-        name={`groups.${groupIndex}.tasks.${taskIndex}.materials`}
+        name={`groups.${groupIndex}.tasks.${taskIndex}.materials.root`}
         render={({ message }) => <p className="text-red-600">{message}</p>}
       />
     </div>
