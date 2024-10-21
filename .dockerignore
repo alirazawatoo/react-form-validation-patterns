@@ -1,0 +1,11 @@
+node_modules
+dist
+coverage
+docs
+.git
+.env
+.env.*
+*.log
+.DS_Store
+Dockerfile
+.dockerignore
